@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Donate</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f5f5f5;
+            text-align: center;
+        }
+
+        h1 {
+            color: #009688;
+        }
+
+        article {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Donate</h1>
+
+    <article>
+        <section id="tree_section">
+            <h2>Donate!</h2>
+            <h3>Even if you close the window, you'll always know how many donations you have</h3>
+
+            <p><button onclick="plantTree()" type="button">Donate!</button></p>
+
+            <h3 id="tree_counter"></h3>
+
+            <button onclick="clearForest()" type="button">Clear all donations</button>
+        </section>
+    </article>
+
+    <script>
+        function plantTree() {
+            if (typeof (Storage) !== "undefined") {
+                if (localStorage.treeCount) {
+                    localStorage.treeCount = Number(localStorage.treeCount) + 1;
+                } else {
+                    localStorage.treeCount = 1;
+                }
+
+               document.getElementById("tree_counter").innerHTML = "You've donated " + localStorage.treeCount;
+
+            } else {
+                document.getElementById("tree_counter").innerHTML = "Your browser doesn't support this feature.";
+            }
+        }
+
+        function clearForest() {
+            if (typeof (Storage) !== "undefined") {
+                localStorage.clear();
+                document.getElementById("tree_counter").innerHTML = "All the donations have been successfully cleared.";
+            } else {
+                document.getElementById("tree_counter").innerHTML = "Your browser doesn't support this feature.";
+            }
+        }
+    </script>
+</body>
+
+</html>
+

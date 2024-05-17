@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drag and Drop</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 50px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        #drop-zone {
+            width: 300px;
+            height: 300px;
+            border: 2px dashed #ccc;
+            text-align: center;
+            line-height: 300px;
+            margin-top: 20px;
+        }
+
+        img {
+            width: 100px;
+            height: 100px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        function allowDrop(event) {
+            event.preventDefault();
+        }
+
+        function drop(event) {
+            event.preventDefault();
+            var data = event.dataTransfer.getData("text");
+            var draggedElement = document.getElementById(data);
+
+            // Clone the dragged element before appending
+            var clone = draggedElement.cloneNode(true);
+            clone.id = "clone-" + new Date().getTime(); // Generate a unique ID for the clone
+
+            event.target.appendChild(clone);
+        }
+    </script>
+</head>
+<body>
+    <h1>Drag and Drop</h1>
+    <div id="drop-zone" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    <img id="drag1" src="soccer.png" alt="Draggable Image" draggable="true" ondragstart="event.dataTransfer.setData('text', event.target.id)">
+</body>
+</html>
+

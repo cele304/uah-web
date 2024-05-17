@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imagination Land</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: 'Arial', sans-serif;
+        }
+
+        #map {
+            width: 100%;
+            height: 300px;
+            background-color: #b0e57c; /* Grass color */
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            color: #fff;
+            font-size: 16px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .drop-zone {
+            width: 100%;
+            height: 100px;
+            background-color: #87bdd8; /* Sky color */
+            margin: 10px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px dashed #fff; /* Cloud color */
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .draggable-item {
+            width: 50px;
+            height: 50px;
+            background-color: #f28c00; /* House color */
+            margin: 10px;
+            cursor: grab;
+        }
+
+        .dragging {
+            opacity: 0.7;
+            cursor: grabbing;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="drop-zone" id="house-zone" ondrop="drop(event, 'house')" ondragover="allowDrop(event)">Place Houses Here</div>
+    <div class="drop-zone" id="tree-zone" ondrop="drop(event, 'tree')" ondragover="allowDrop(event)">Place Trees Here</div>
+    <div id="game-container">
+        <div id="item1" class="draggable-item" draggable="true" ondragstart="dragStart(event)"></div>
+        <div id="item2" class="draggable-item" draggable="true" ondragstart="dragStart(event)"></div>
+        <div id="item3" class="draggable-item" draggable="true" ondragstart="dragStart(event)"></div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Geolocation
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+
+                    // Show current location on the map
+                    const map = document.getElementById('map');
+                    map.innerHTML = `Welcome to Imagination Land! Latitude ${latitude.toFixed(4)}, Longitude ${longitude.toFixed(4)}`;
+
+                    // You can use these coordinates to set the target locations for the items in the game.
+                });
+            } else {
+                console.log("Geolocation is not supported by this browser.");
+            }
+        });
+
+        function dragStart(e) {
+            e.dataTransfer.setData("text/plain", e.target.id);
+        }
+
+        function allowDrop(e) {
+            e.preventDefault();
+        }
+
+        function drop(e, item) {
+            e.preventDefault();
+            const data = e.dataTransfer.getData("text/plain");
+            const draggedItem = document.getElementById(data);
+            const dropZone = e.target;
+
+            // Append the dragged item to the drop zone
+            dropZone.appendChild(draggedItem);
+
+            // Provide feedback based on the dropped item
+            if (item === 'house') {
+                alert('Congratulations! You built a house in Imagination Land!');
+            } else if (item === 'tree') {
+                alert('Hooray! You planted a tree in Imagination Land!');
+            }
+        }
+    </script>
+</body>
+</html>
+
